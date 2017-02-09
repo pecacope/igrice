@@ -21,7 +21,10 @@
   "rules": {
     "key-spacing"          : 0,
     "jsx-quotes"           : [0, "prefer-single"],
-    "semi"                 : 0,
+    "semi": [
+      "error",
+      "always"
+    ],
     "space-before-function-paren" : 0,
     "react/jsx-indent-props": 0
   }

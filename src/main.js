@@ -21,39 +21,39 @@ let render = () => {
       <Welcome />
     </Provider>
     , MOUNT_NODE);
-}
+};
 // This code is excluded from production bundle
 if (__DEV__) {
   if (module.hot) {
     // Development render functions
-    const renderApp = render
+    const renderApp = render;
     const renderError = (error) => {
-      const RedBox = require('redbox-react').default
+      const RedBox = require('redbox-react').default;
 
-      ReactDOM.render(<RedBox error={error} />, MOUNT_NODE)
-    }
+      ReactDOM.render(<RedBox error={error} />, MOUNT_NODE);
+    };
 
     // Wrap render in try/catch
     render = () => {
       try {
-        renderApp()
+        renderApp();
       } catch (error) {
-        console.error(error)
-        renderError(error)
+        console.error(error);
+        renderError(error);
       }
-    }
+    };
 
     // Setup hot module replacement
     module.hot.accept('./components/Welcome', () =>
       setImmediate(() => {
-        ReactDOM.unmountComponentAtNode(MOUNT_NODE)
-        render()
+        ReactDOM.unmountComponentAtNode(MOUNT_NODE);
+        render();
       })
-    )
+    );
   }
 }
 
 // ========================================================
 // Go!
 // ========================================================
-render()
+render();
