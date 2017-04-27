@@ -16,16 +16,15 @@
     "__DEV__"      : false,
     "__TEST__"     : false,
     "__PROD__"     : false,
-    "__COVERAGE__" : false
+    "__QA__"       : false,
+    "__COVERAGE__" : false,
+    "__VARIABLES__" : {}
   },
   "rules": {
-    "key-spacing"          : 0,
-    "jsx-quotes"           : [0, "prefer-single"],
     "semi": [
-      "error",
-      "always"
-    ],
-    "space-before-function-paren" : 0,
-    "react/jsx-indent-props": 0
+            "error",
+            "always"
+        ],
+    "react/prop-types": 0
   }
 }

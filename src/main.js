@@ -2,7 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
+import { Router, Route, IndexRoute, browserHistory } from 'react-router';
+import reduxThunk from 'redux-thunk';
 
+import App from './components/App';
 import Welcome from './components/Welcome';
 import reducers from './reducers';
 
@@ -10,15 +13,20 @@ import reducers from './reducers';
 // Store Instantiation
 // ========================================================
 
-const createStoreWithMiddleware = applyMiddleware()(createStore);
+const createStoreWithMiddleware = applyMiddleware(reduxThunk)(createStore);
+const store = createStoreWithMiddleware(reducers, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 // ========================================================
 // Render Setup
 // ========================================================
 const MOUNT_NODE = document.getElementById('root');
 let render = () => {
   ReactDOM.render(
-    <Provider store={createStoreWithMiddleware(reducers)}>
-      <Welcome />
+    <Provider store={store}>
+      <Router history={browserHistory}>
+        <Route path='/' component={App} >
+          <IndexRoute component={Welcome} />
+        </Route>
+      </Router>
     </Provider>
     , MOUNT_NODE);
 };

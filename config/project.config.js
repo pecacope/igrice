@@ -33,7 +33,7 @@ const config = {
   compiler_babel : {
     cacheDirectory : true,
     plugins        : ['transform-runtime'],
-    presets        : ['es2015', 'react', 'stage-0']
+    presets        :[['es2015', { 'modules': false }], 'react', 'stage-1']
   },
   compiler_devtool         : 'source-map',
   compiler_hash_type       : 'hash',
@@ -70,6 +70,8 @@ Edit at Your Own Risk
 -------------------------------------------------
 ************************************************/
 
+const ENV_VARIABLES = require('./environments/' + config.env + '.config.json');
+
 // ------------------------------------
 // Environment
 // ------------------------------------
@@ -81,11 +83,12 @@ config.globals = {
   'NODE_ENV'     : config.env,
   '__DEV__'      : config.env === 'development',
   '__PROD__'     : config.env === 'production',
+  '__QA__'       : config.env === 'qa',
   '__TEST__'     : config.env === 'test',
   '__COVERAGE__' : !argv.watch && config.env === 'test',
-  '__BASENAME__' : JSON.stringify(process.env.BASENAME || '')
+  '__BASENAME__' : JSON.stringify(process.env.BASENAME || ''),
+  '__VARIABLES__': JSON.stringify(ENV_VARIABLES)
 };
-
 // ------------------------------------
 // Validate Vendor Dependencies
 // ------------------------------------
