@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import './Welcome.scss';
-import '../../styles/core.scss';
 import LOGO_IMAGE from '../../images/react-logo.png';
 
-export default class App extends Component {
+export default class ErrorPage extends Component {
   render () {
     return (
       <div>
