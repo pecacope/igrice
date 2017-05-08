@@ -137,6 +137,13 @@ webpackConfig.module.rules = [{
   loader: 'json-loader'
 }];
 
+if (__PROD__) {
+  webpackConfig.module.rules.push({
+    test: /\.js$/,
+    loader: 'strip-loader?strip[]=alert,strip[]=console.log,strip[]=console.error,strip[]=console.warn'
+  });
+}
+
 // ------------------------------------
 // Style Loaders
 // ------------------------------------
