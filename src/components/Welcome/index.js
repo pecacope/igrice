@@ -1,7 +1,7 @@
 import Welcome from './Welcome';
 
 export {
-    Welcome
+  Welcome
 };
 
 export default Welcome;

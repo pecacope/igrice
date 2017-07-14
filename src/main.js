@@ -38,10 +38,10 @@ let render = () => {
     </Provider>
     , MOUNT_NODE);
 };
-        // <App>
-        //   <Switch>
-        //   </Switch>
-        // </App>
+// <App>
+//   <Switch>
+//   </Switch>
+// </App>
 // This code is excluded from production bundle
 if (__DEV__) {
   if (module.hot) {

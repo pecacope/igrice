@@ -1,7 +1,7 @@
 import ErrorPage from './ErrorPage';
 
 export {
-    ErrorPage
+  ErrorPage
 };
 
 export default ErrorPage;
