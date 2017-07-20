@@ -163,7 +163,11 @@ webpackConfig.module.rules.push({
       }
     },
     {
-      loader: 'postcss-loader'
+      loader: 'postcss-loader',
+      options: {
+        sourceMap: true,
+        minimize: true
+      }
     },
     {
       loader: 'sass-loader',
@@ -190,7 +194,11 @@ webpackConfig.module.rules.push({
       }
     },
     {
-      loader: 'postcss-loader'
+      loader: 'postcss-loader',
+      options: {
+        sourceMap: true,
+        minimize: true
+      }
     }
   ]
 });
