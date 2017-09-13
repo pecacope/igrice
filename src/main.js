@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
-import { Router, Route, Switch } from 'react-router';
+import { Router, Route, Switch } from 'react-router-dom';
 import createBrowserHistory from 'history/createBrowserHistory';
 import reduxThunk from 'redux-thunk';
 
@@ -38,10 +38,7 @@ let render = () => {
     </Provider>
     , MOUNT_NODE);
 };
-// <App>
-//   <Switch>
-//   </Switch>
-// </App>
+
 // This code is excluded from production bundle
 if (__DEV__) {
   if (module.hot) {
