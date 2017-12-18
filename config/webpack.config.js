@@ -10,6 +10,7 @@ const debug = require('debug')('app:config:webpack');
 const __DEV__ = project.globals.__DEV__;
 const __PROD__ = project.globals.__PROD__;
 const __QA__ = project.globals.__QA__;
+const __STAGING__ = project.globals.__STAGING__;
 const __TEST__ = project.globals.__TEST__;
 const __VARIABLES__ = project.globals.__VARIABLES__;
 
@@ -93,13 +94,13 @@ if (__TEST__ && !argv.watch) {
   });
 }
 
-if (__DEV__) {
+if (__DEV__ || __QA__) {
   debug('Enabling plugins for live development (HMR, NoErrors).');
   webpackConfig.plugins.push(
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin()
   );
-} else if (__PROD__ || __QA__) {
+} else if (__PROD__ || __STAGING__) {
   debug('Enabling plugins for production (OccurenceOrder & UglifyJS).');
   webpackConfig.plugins.push(
     new webpack.optimize.OccurrenceOrderPlugin(),
@@ -167,59 +168,117 @@ if (__PROD__) {
 // ------------------------------------
 // We use cssnano with the postcss loader, so we tell
 // css-loader not to duplicate minimization.
-webpackConfig.module.rules.push({
-  test: /\.scss$/,
-  use: [
-    {
-      loader: 'style-loader'
-    },
-    {
-      loader: 'css-loader',
-      options: {
-        sourceMap: true,
-        minimize: true
+if (__DEV__) {
+  webpackConfig.module.rules.push({
+    test: /\.scss$/,
+    use: [
+      {
+        loader: 'style-loader'
+      },
+      {
+        loader: 'css-loader',
+        options: {
+          sourceMap: true,
+          minimize: true
+        }
+      },
+      {
+        loader: 'postcss-loader',
+        options: {
+          sourceMap: true,
+          minimize: true
+        }
+      },
+      {
+        loader: 'sass-loader',
+        options: {
+          sourceMap: true,
+          includePaths: [
+            project.paths.client('styles')
+          ]
+        }
       }
-    },
-    {
-      loader: 'postcss-loader',
-      options: {
-        sourceMap: true,
-        minimize: true
+    ]
+  });
+  webpackConfig.module.rules.push({
+    test: /\.css$/,
+    use: [
+      {
+        loader: 'style-loader'
+      },
+      {
+        loader: 'css-loader',
+        options: {
+          sourceMap: true,
+          minimize: true
+        }
+      },
+      {
+        loader: 'postcss-loader',
+        options: {
+          sourceMap: true,
+          minimize: true
+        }
       }
-    },
-    {
-      loader: 'sass-loader',
-      options: {
-        sourceMap: true,
-        includePaths: [
-          project.paths.client('styles')
-        ]
-      }
-    }
-  ]
-});
-webpackConfig.module.rules.push({
-  test: /\.css$/,
-  use: [
-    {
-      loader: 'style-loader'
-    },
-    {
-      loader: 'css-loader',
-      options: {
-        sourceMap: true,
-        minimize: true
-      }
-    },
-    {
-      loader: 'postcss-loader',
-      options: {
-        sourceMap: true,
-        minimize: true
-      }
-    }
-  ]
-});
+    ]
+  });
+} else {
+  webpackConfig.module.rules.push({
+    test: /\.scss$/,
+    use: ExtractTextPlugin.extract({fallback: 'style-loader',
+      use: [
+        {
+          loader: 'css-loader',
+          options: {
+            sourceMap: true,
+            minimize: true
+          }
+        },
+        {
+          loader: 'postcss-loader',
+          options: {
+            sourceMap: true,
+            minimize: true
+          }
+        },
+        {
+          loader: 'sass-loader',
+          options: {
+            sourceMap: true,
+            includePaths: [
+              project.paths.client('styles')
+            ]
+          }
+        }
+      ]})
+  });
+  webpackConfig.module.rules.push({
+    test: /\.css$/,
+    use: ExtractTextPlugin.extract({fallback: 'style-loader',
+      use: [
+        {
+          loader: 'css-loader',
+          options: {
+            sourceMap: true,
+            minimize: true
+          }
+        },
+        {
+          loader: 'postcss-loader',
+          options: {
+            sourceMap: true,
+            minimize: true
+          }
+        }
+      ]})
+  });
+  webpackConfig.plugins.push(
+    new ExtractTextPlugin({
+      filename: '[name].[contenthash].css',
+      allChunks: true
+    })
+  );
+}
 
 webpackConfig.plugins.push(
   new webpack.LoaderOptionsPlugin({

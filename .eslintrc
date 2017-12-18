@@ -17,7 +17,9 @@
     "__TEST__"     : false,
     "__PROD__"     : false,
     "__QA__"       : false,
+    "__STAGING__"  : false,
     "__COVERAGE__" : false,
+    "CONF"         : false,
     "__VARIABLES__" : {}
   },
   "rules": {

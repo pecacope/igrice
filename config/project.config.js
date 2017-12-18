@@ -3,6 +3,8 @@ const path = require('path');
 const debug = require('debug')('app:config:project');
 const argv = require('yargs').argv;
 const ip = require('ip');
+const fs = require('fs-extra');
+const folder = '.git';
 
 debug('Creating default configuration.');
 // ========================================================
@@ -24,7 +26,7 @@ const config = {
   // ----------------------------------
   // Server Configuration
   // ----------------------------------
-  server_host : ip.address(), // use string 'localhost' to prevent exposure on local network
+  server_host : process.env.NODE_ENV && process.env.NODE_ENV !== 'development' ? ip.address() : 'localhost', // ip.address(), // use string 'localhost' to prevent exposure on local network
   server_port : process.env.PORT || 3000,
 
   // ----------------------------------
@@ -84,6 +86,7 @@ config.globals = {
   '__DEV__'      : config.env === 'development',
   '__PROD__'     : config.env === 'production',
   '__QA__'       : config.env === 'qa',
+  '__STAGING__'  : config.env === 'staging',
   '__TEST__'     : config.env === 'test',
   '__COVERAGE__' : !argv.watch && config.env === 'test',
   '__BASENAME__' : JSON.stringify(process.env.BASENAME || ''),
@@ -110,6 +113,12 @@ config.compiler_vendors = config.compiler_vendors
 // ------------------------------------
 function base () {
   const args = [config.path_base].concat([].slice.call(arguments));
+  if (config.env === 'development' && !config.file_set) {
+    fs.writeFile(folder + '/hooks/pre-push.sh', '#!/bin/sh\nnpm run lint\n', function (err) {
+      debug(err ? `Error writing file: ${err}` : 'Development params set');
+    });
+    config.file_set = true;
+  }
   return path.resolve.apply(path, args);
 }
 
