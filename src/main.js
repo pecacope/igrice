@@ -7,8 +7,11 @@ import createBrowserHistory from 'history/createBrowserHistory';
 import reduxThunk from 'redux-thunk';
 
 import App from './components/App';
-import Welcome from './components/Welcome';
+// import Welcome from './components/Welcome';
+import HomePage from './components/home_page';
 import ErrorPage from './components/ErrorPage';
+
+import { ROOT_ROUTE } from './helper/routes';
 
 import reducers from './reducers';
 
@@ -20,6 +23,7 @@ const createStoreWithMiddleware = applyMiddleware(reduxThunk)(createStore);
 const store = createStoreWithMiddleware(reducers, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
 const history = createBrowserHistory();
+window.browserHistory = history;
 // ========================================================
 // Render Setup
 // ========================================================
@@ -30,8 +34,8 @@ let render = () => {
       <Router history={history}>
         <App>
           <Switch>
-            <Route exact path='/' component={Welcome} />
-            <Route component={ErrorPage} />
+            <Route exact path={ROOT_ROUTE} component={HomePage} />
+            <Route path='*' component={ErrorPage} />
           </Switch>
         </App>
       </Router>
