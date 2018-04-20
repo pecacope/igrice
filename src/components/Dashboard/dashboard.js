@@ -24,6 +24,7 @@ class Dashboard extends Component {
       <form className='container' onSubmit={this.onInputChange}>
         <input onChange={event => this.setState({term: event.target.value})} />
         <button className='btn btn-default pull-right' type='submit'>Pošalji</button>
+        <div />
       </form>
     );
   }
